@@ -1,0 +1,8 @@
+torch
+pandas
+numpy
+scikit-learn
+wetterdienst
+matplotlib
+PySide6
+streamlit
