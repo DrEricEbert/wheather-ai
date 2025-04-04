@@ -11,7 +11,7 @@ import numpy as np
 
 from model import WeatherForecaster
 from train import train_model, load_model, WeatherDataset
-from data_loader import load_dwd_weather_data, get_station_list
+from data_loader import load_weather_data, get_station_list
 from sklearn.preprocessing import StandardScaler
 
 class MplCanvas(FigureCanvas):
@@ -33,9 +33,9 @@ class WeatherApp(QWidget):
 
         # Station auswählen
         self.station_combo = QComboBox()
-        for name, sid in get_station_list():
-            self.station_combo.addItem(name, sid)
-        form.addRow("DWD Station:", self.station_combo)
+        for name in get_station_list():
+            self.station_combo.addItem(name)
+        form.addRow("Station:", self.station_combo)
 
         # Hyperparameter
         self.lr_input = QLineEdit("0.001")
@@ -85,8 +85,8 @@ class WeatherApp(QWidget):
         load_model(self.model, "models/forecaster.pt")
 
     def load_data(self):
-        station_id = self.station_combo.currentData()
-        self.df = load_dwd_weather_data(station_id=station_id)
+        station = self.station_combo.currentData()
+        self.df = load_weather_data(station=station)
         QMessageBox.information(self, "Info", f"{len(self.df)} Wetterdaten geladen.")
 
     def train_model(self):
